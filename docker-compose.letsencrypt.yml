@@ -13,7 +13,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.myresolver.acme.email=postmaster@brev.ch"
+      - "--certificatesresolvers.myresolver.acme.email=postmaster@gudon.ch"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
@@ -30,8 +30,6 @@ services:
       context: .
       args:
        - OMEKA_VERSION=v2.1.1
-    # ports:
-    #   - 80:80
     volumes:
     - ./files:/var/www/html/omeka-s/files
     - ./database.ini:/var/www/html/omeka-s/config/database.ini
@@ -40,7 +38,7 @@ services:
       - omeka-db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`brev.ch`)"
+      - "traefik.http.routers.whoami.rule=Host(`museum.gudon.ch`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=myresolver"
 
@@ -55,14 +53,12 @@ services:
   omeka-db-admin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin:latest
-    # ports:
-    #   - 8000:80
     environment:
       - PMA_HOST=omeka-db
     depends_on:
       - omeka-db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`db.brev.ch`)"
+      - "traefik.http.routers.whoami.rule=Host(`museum-db.gudon.ch`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=myresolver"
