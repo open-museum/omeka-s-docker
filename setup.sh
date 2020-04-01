@@ -16,6 +16,8 @@ then
   rm database.ini;
   export "$(cat .env | xargs)";
 fi
+# FIXME
+echo "THIS PART IS NOT WORKING"
 echo "user     = \"$MYSQL_USER\"" > database.ini
 echo "password = \"$MYSQL_PASSWORD\"" >> database.ini
 echo "dbname   = \"$MYSQL_DATABASE\"" >> database.ini

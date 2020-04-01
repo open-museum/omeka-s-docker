@@ -35,7 +35,7 @@ docker-compose up -d
 Start Omeka S with Letsencrypt
 
 ```bash
-docker-compose -f docker-compos.letsencrypt.yml up -d
+docker-compose -f docker-compose.letsencrypt.yml up -d
 ```
 
 ## Support
