@@ -1,10 +1,12 @@
 src:
-- src/*
+- setup.sh
 - .gitattributes
 - .gitignore
 
 docs:
-- docs/*
+- _layouts/*
+- assets/*
+- _config.yml
 - CODE_OF_CONDUCT.md
 - CONTRIBUTING.md
 - LICENSE.md

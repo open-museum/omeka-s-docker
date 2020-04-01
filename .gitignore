@@ -103,3 +103,7 @@ $RECYCLE.BIN/
 
 # Exclude example.env
 !example.env
+database.ini
+db/
+files/
+letsencrypt/
