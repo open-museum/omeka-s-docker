@@ -22,7 +22,7 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/omeka-s/
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN chown -R www-data files
+RUN chown -R www-data files themes modules
 
 RUN curl -L -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
 RUN unzip EasyInstall-3.2.5.zip -d modules
