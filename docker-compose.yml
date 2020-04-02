@@ -12,6 +12,7 @@ services:
     volumes:
     - ./files:/var/www/html/omeka-s/files
     - ./database.ini:/var/www/html/omeka-s/config/database.ini
+    - ./php.ini:/usr/local/etc/php/php.ini
     env_file:
       - .env
     depends_on:
