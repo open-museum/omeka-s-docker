@@ -16,11 +16,14 @@ Copy and edit `.env.example`
 ```bash
 cp .env.example .env
 nano .env
+source .env
 ```
 
 Create folders and `database.ini`
 
 ```bash
+mkdir files
+chown -R www-data files
 bash setup.sh
 ```
 
