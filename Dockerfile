@@ -24,6 +24,6 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN chown -R www-data files
 
-RUN curl -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
+RUN curl -L -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
 RUN unzip EasyInstall-3.2.5.zip -d modules
 RUN rm EasyInstall-3.2.5.zip
