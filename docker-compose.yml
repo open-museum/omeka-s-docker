@@ -1,32 +1,39 @@
-version: '3'
+version: "3"
 
 services:
   omeka-web:
     container_name: apache-php
     build:
       context: .
-      args:
-       - OMEKA_VERSION=v2.1.1
     ports:
       - 80:80
     volumes:
-    - ./files:/var/www/html/omeka-s/files
-    - ./database.ini:/var/www/html/omeka-s/config/database.ini
-    - ./php.ini:/usr/local/etc/php/php.ini
-    env_file:
-      - .env
+      # - ./config/.htaccess-production:/usr/src/omeka-s/.htaccess
+      - ./config/.htaccess-development:/usr/src/omeka-s/.htaccess
+
+      - ./files:/usr/src/omeka-s/files
+      - ./config/database.ini:/usr/src/omeka-s/config/database.ini
+
+      # - ./config/local.config-production.php:/usr/src/omeka-s/config/local.config.php
+      - ./config/local.config-development.php:/usr/src/omeka-s/config/local.config.php
+      
+      # - ./config/php-production.ini:/usr/local/etc/php/php.ini
+      - ./config/php-development.ini:/usr/local/etc/php/php.ini
+
     depends_on:
       - omeka-db
 
   omeka-db:
-  # https://hub.docker.com/r/linuxserver/mariadb
     container_name: mariadb
     image: mariadb:10.4
     restart: always
     volumes:
       - ./db:/var/lib/mysql
-    env_file:
-      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
 
   omeka-db-admin:
     container_name: phpmyadmin

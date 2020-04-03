@@ -1,29 +1,160 @@
 FROM php:7.4-apache
-ARG OMEKA_VERSION
 
-RUN apt-get update
-RUN apt-get install -y curl git libsodium-dev libxml2-dev software-properties-common unzip
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y nodejs
-RUN docker-php-ext-install intl pdo pdo_mysql sodium xml
-RUN docker-php-ext-enable intl pdo pdo_mysql sodium xml
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ghostscript \
+        unzip \
+	; \
+	rm -rf /var/lib/apt/lists/*
 
-RUN git clone -b $OMEKA_VERSION https://github.com/omeka/omeka-s.git 
+RUN set -ex; \
+	\
+	savedAptMark="$(apt-mark showmanual)"; \
+	\
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libfreetype6-dev \
+		libjpeg-dev \
+		libmagickwand-dev \
+		libpng-dev \
+        libsodium-dev \
+        libxml2-dev \
+		libzip-dev \
+	; \
+	\
+	docker-php-ext-configure gd --with-freetype --with-jpeg; \
+	docker-php-ext-install -j "$(nproc)" \
+		gd \
+		intl \
+		opcache \
+        pdo \
+        pdo_mysql \
+        sodium \
+        xml \
+		zip \
+	; \
+	pecl install imagick-3.4.4; \
+	docker-php-ext-enable imagick; \
+	\
+# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
+	apt-mark auto '.*' > /dev/null; \
+	apt-mark manual $savedAptMark; \
+	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+		| awk '/=>/ { print $3 }' \
+		| sort -u \
+		| xargs -r dpkg-query -S \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -rt apt-mark manual; \
+	\
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*
 
-WORKDIR omeka-s
+# set recommended PHP.ini settings
+# see https://secure.php.net/manual/en/opcache.installation.php
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=2'; \
+		echo 'opcache.fast_shutdown=1'; \
+	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+RUN { \
+# https://www.php.net/manual/en/errorfunc.constants.php
+		echo 'error_reporting = E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_RECOVERABLE_ERROR'; \
+		echo 'display_errors = Off'; \
+		echo 'display_startup_errors = Off'; \
+		echo 'log_errors = On'; \
+		echo 'error_log = /dev/stderr'; \
+		echo 'log_errors_max_len = 1024'; \
+		echo 'ignore_repeated_errors = On'; \
+		echo 'ignore_repeated_source = Off'; \
+		echo 'html_errors = Off'; \
+	} > /usr/local/etc/php/conf.d/error-logging.ini
 
-RUN npm install
-RUN npm install --global gulp-cli
-RUN gulp init
+RUN set -eux; \
+	a2enmod rewrite expires; \
+	\
+# https://httpd.apache.org/docs/2.4/mod/mod_remoteip.html
+	a2enmod remoteip; \
+	{ \
+		echo 'RemoteIPHeader X-Forwarded-For'; \
+# these IP ranges are reserved for "private" use and should thus *usually* be safe inside Docker
+		echo 'RemoteIPTrustedProxy 10.0.0.0/8'; \
+		echo 'RemoteIPTrustedProxy 172.16.0.0/12'; \
+		echo 'RemoteIPTrustedProxy 192.168.0.0/16'; \
+		echo 'RemoteIPTrustedProxy 169.254.0.0/16'; \
+		echo 'RemoteIPTrustedProxy 127.0.0.0/8'; \
+	} > /etc/apache2/conf-available/remoteip.conf; \
+	a2enconf remoteip; \
+# https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512
+# (replace all instances of "%h" with "%a" in LogFormat)
+	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
-RUN a2enmod rewrite
-ENV APACHE_DOCUMENT_ROOT /var/www/html/omeka-s/
+VOLUME /var/www/html
 
+ENV OMEKA_VERSION 2.1.1
+ENV OMEKA_SHA1 85926a560e6faa2ba2aa9444a74e88c82c7f3900
+
+RUN set -ex; \
+    curl -L -o omeka.zip "https://github.com/omeka/omeka-s/releases/download/v${OMEKA_VERSION}/omeka-s-${OMEKA_VERSION}.zip"; \
+	echo "$OMEKA_SHA1 *omeka.zip" | sha1sum -c -; \
+	unzip omeka.zip -d /usr/src/; \
+	rm omeka.zip; \
+	chown -R www-data:www-data /usr/src/omeka-s
+
+RUN curl -L -o EasyInstall-3.2.5.zip "https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip"; \
+    unzip EasyInstall-3.2.5.zip -d /usr/src/omeka-s/modules/; \
+    rm EasyInstall-3.2.5.zip
+
+ENV APACHE_DOCUMENT_ROOT /usr/src/omeka-s
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN chown -R www-data files themes modules
+CMD ["apache2-foreground"]
 
-RUN curl -L -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
-RUN unzip EasyInstall-3.2.5.zip -d modules
-RUN rm EasyInstall-3.2.5.zip
+
+
+# FROM php:7.4-apache
+
+# RUN apt-get update && apt-get install -y \
+#         curl \
+#         git \
+#         libfreetype6-dev \
+#         libjpeg62-turbo-dev \
+#         libpng-dev \
+#         libsodium-dev \
+#         libxml2-dev \
+#         software-properties-common \
+#         unzip
+
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# RUN docker-php-ext-install -j$(nproc) gd intl pdo pdo_mysql sodium xml
+# RUN a2enmod rewrite
+
+# RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+# RUN apt-get install -y nodejs
+
+# ARG OMEKA_VERSION
+# RUN git clone https://github.com/omeka/omeka-s.git 
+
+# WORKDIR /var/www/html/omeka-s/
+
+# RUN git checkout tags/$OMEKA_VERSION
+
+# RUN npm install
+# RUN npm install --global gulp-cli
+# RUN gulp init
+
+# ENV APACHE_DOCUMENT_ROOT /var/www/html/omeka-s/
+# RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+# RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# RUN chown -R www-data files themes modules
+
+# RUN curl -L -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
+# RUN unzip EasyInstall-3.2.5.zip -d modules
+# RUN rm EasyInstall-3.2.5.zip
+
+# COPY . /var/www/html/omeka-s/
