@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  omeka-web:
+    container_name: apache-php
+    build:
+      context: .
+    ports:
+      - 80:80
+    volumes:
+      # - ./config/.htaccess-production:/usr/src/omeka-s/.htaccess
+      - ./config/.htaccess-development:/usr/src/omeka-s/.htaccess
+
+      - ./files:/usr/src/omeka-s/files
+      - ./config/database.ini:/usr/src/omeka-s/config/database.ini
+
+      # - ./config/local.config-production.php:/usr/src/omeka-s/config/local.config.php
+      - ./config/local.config-development.php:/usr/src/omeka-s/config/local.config.php
+      
+      # - ./config/php-production.ini:/usr/local/etc/php/php.ini
+      - ./config/php-development.ini:/usr/local/etc/php/php.ini
+
+    depends_on:
+      - omeka-db
+
+  omeka-db:
+    container_name: mariadb
+    image: mariadb:10.4
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+
+  omeka-db-admin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8000:80
+    environment:
+      - PMA_HOST=omeka-db
+    depends_on:
+      - omeka-db
