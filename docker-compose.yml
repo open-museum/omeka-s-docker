@@ -11,8 +11,11 @@ services:
       - ./config/.htaccess-production:/usr/src/omeka-s/.htaccess
       # - ./config/.htaccess-development:/usr/src/omeka-s/.htaccess
 
-      - ./files:/usr/src/omeka-s/files
       - ./config/database.ini:/usr/src/omeka-s/config/database.ini
+      - ./files:/usr/src/omeka-s/files
+      - ./logs:/usr/src/omeka-s/logs
+      - ./modules:/usr/src/omeka-s/modules
+      - ./themes:/usr/src/omeka-s/themes
 
       - ./config/local.config-production.php:/usr/src/omeka-s/config/local.config.php
       # - ./config/local.config-development.php:/usr/src/omeka-s/config/local.config.php

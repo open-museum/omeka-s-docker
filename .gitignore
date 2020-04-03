@@ -105,5 +105,11 @@ $RECYCLE.BIN/
 !example.env
 database.ini
 db/
-files/
-letsencrypt/
+
+# exclude everything
+files/*
+logs/*
+
+# exception to the rule
+!files/.gitkeep 
+!logs/.gitkeep 

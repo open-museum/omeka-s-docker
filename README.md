@@ -18,7 +18,7 @@ cp .env.example .env
 nano .env
 ```
 
-Create folders and `database.ini`
+Export environment variables and create `database.ini`
 
 ```bash
 export $(cat .env | sed 's/#.*//g' | xargs)
@@ -31,6 +31,12 @@ Start Omeka S
 
 ```bash
 docker-compose up -d
+```
+
+Fix permissions
+
+```bash
+chown -R www-data:www-data files logs modules themes
 ```
 
 ## Support
