@@ -4,6 +4,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ghostscript \
+		imagemagick \
         unzip \
 	; \
 	rm -rf /var/lib/apt/lists/*
@@ -88,7 +89,6 @@ RUN set -eux; \
 		echo 'RemoteIPTrustedProxy 127.0.0.0/8'; \
 	} > /etc/apache2/conf-available/remoteip.conf; \
 	a2enconf remoteip; \
-# https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512
 # (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
@@ -113,48 +113,3 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 CMD ["apache2-foreground"]
-
-
-
-# FROM php:7.4-apache
-
-# RUN apt-get update && apt-get install -y \
-#         curl \
-#         git \
-#         libfreetype6-dev \
-#         libjpeg62-turbo-dev \
-#         libpng-dev \
-#         libsodium-dev \
-#         libxml2-dev \
-#         software-properties-common \
-#         unzip
-
-# RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-# RUN docker-php-ext-install -j$(nproc) gd intl pdo pdo_mysql sodium xml
-# RUN a2enmod rewrite
-
-# RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-# RUN apt-get install -y nodejs
-
-# ARG OMEKA_VERSION
-# RUN git clone https://github.com/omeka/omeka-s.git 
-
-# WORKDIR /var/www/html/omeka-s/
-
-# RUN git checkout tags/$OMEKA_VERSION
-
-# RUN npm install
-# RUN npm install --global gulp-cli
-# RUN gulp init
-
-# ENV APACHE_DOCUMENT_ROOT /var/www/html/omeka-s/
-# RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-# RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# RUN chown -R www-data files themes modules
-
-# RUN curl -L -O https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip
-# RUN unzip EasyInstall-3.2.5.zip -d modules
-# RUN rm EasyInstall-3.2.5.zip
-
-# COPY . /var/www/html/omeka-s/

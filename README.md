@@ -16,14 +16,12 @@ Copy and edit `.env.example`
 ```bash
 cp .env.example .env
 nano .env
-source .env
 ```
 
 Create folders and `database.ini`
 
 ```bash
-mkdir files
-chown -R www-data files
+source .env
 bash setup.sh
 ```
 
@@ -33,12 +31,6 @@ Start Omeka S
 
 ```bash
 docker-compose up -d
-```
-
-Start Omeka S with Letsencrypt
-
-```bash
-docker-compose -f docker-compose.letsencrypt.yml up -d
 ```
 
 ## Support

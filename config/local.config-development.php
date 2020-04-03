@@ -2,7 +2,7 @@
 return [
     'logger' => [
         'log' => true,
-        'priority' => \Laminas\Log\Logger::NOTICE,
+        // 'priority' => \Laminas\Log\Logger::NOTICE,
     ],
     'http_client' => [
         'sslcapath' => null,
