@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-08 00:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: view/easy-install/admin/index/index.phtml:8
+msgid "Easy Install"
+msgstr ""
+
+#: view/easy-install/admin/index/index.phtml:10
+#, php-format
+msgid ""
+"For more information on addons, see the pages %smodules%s and %sthemes%s or "
+"on %sOmeka.org%s."
+msgstr ""
+
+#: view/easy-install/admin/index/index.phtml:16
+msgid "Select either a module or a theme."
+msgstr ""
+
+#: view/easy-install/admin/index/index.phtml:17
+msgid "Addons with an asterisk are already downloaded."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:23
+msgid "No addon to list: check your connection."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:37
+msgid "There was an error on the form. Please try again."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:58
+msgid "Nothing processed. Please try again."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:85
+#, php-format
+msgid "The %s directory is not writeable by the server."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:90
+#, php-format
+msgid ""
+"Don’t forget to protect the %s directory from writing after installation."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:98
+#, php-format
+msgid ""
+"A zipfile exists with the same name in the %s directory and cannot be "
+"removed."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:105
+msgid "dir"
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:123
+#, php-format
+msgid ""
+"If \"%s\" doesn’t appear in the list of %s, its directory may need to be "
+"renamed."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:130
+#, php-format
+msgid "%s uploaded successfully"
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:133
+#, php-format
+msgid "An error occurred during the unzipping of the %s \"%s\"."
+msgstr ""
+
+#: src/Mvc/Controller/Plugin/Addons.php:209
+#, php-format
+msgid "Unable to fetch the url %s."
+msgstr ""
+
+#: src/Mvc/Controller/Plugin/Addons.php:210
+msgid ""
+"You should enable \"allow_url_fopen\" and \"allow_url_include\" in php.ini."
+msgstr ""
+
+#: src/Form/UploadForm.php:22
+msgid "Modules Omeka.org"
+msgstr ""
+
+#: src/Form/UploadForm.php:23
+msgid "Themes Omeka.org"
+msgstr ""
+
+#: src/Form/UploadForm.php:24
+msgid "Modules web"
+msgstr ""
+
+#: src/Form/UploadForm.php:25
+msgid "Themes web"
+msgstr ""
+
+#: src/Form/UploadForm.php:35 src/Form/UploadForm.php:49
+msgid "Select below"
+msgstr ""
