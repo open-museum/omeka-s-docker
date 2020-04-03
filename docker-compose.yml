@@ -19,7 +19,12 @@ services:
       
       - ./config/php-production.ini:/usr/local/etc/php/php.ini
       # - ./config/php-development.ini:/usr/local/etc/php/php.ini
-
+    environment: 
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_USER
+      - EMAIL_PASSWORD
+      - EMAIL_CONNECTION_TYPE
     depends_on:
       - omeka-db
 

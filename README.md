@@ -21,7 +21,7 @@ nano .env
 Create folders and `database.ini`
 
 ```bash
-source .env
+export $(cat .env | sed 's/#.*//g' | xargs)
 bash setup.sh
 ```
 

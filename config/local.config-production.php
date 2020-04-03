@@ -30,4 +30,21 @@ return [
             'Omeka\File\Thumbnailer' => 'Omeka\File\Thumbnailer\ImageMagick',
         ],
     ],
+    'mail' => [
+        'transport' => [
+            'type' => 'smtp',
+            'options' => [
+                'name' => 'localhost',
+                'host' => getenv('EMAIL_HOST'), //'127.0.0.1'
+                'port' => getenv('EMAIL_PORT'), // 25, 465 for 'ssl', and 587 for 'tls'
+                'connection_class' => 'smtp', // 'plain', 'login', or 'crammd5'
+                'connection_config' => [
+                    'username' => getenv('EMAIL_USER'),
+                    'password' => getenv('EMAIL_PASSWORD'),
+                    'ssl' => getenv('EMAIL_CONNECTION_TYPE'), // 'null', 'ssl' or 'tls'
+                    'use_complete_quit' => true,
+                ],
+            ],
+        ],
+    ],
 ];
