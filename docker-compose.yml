@@ -5,6 +5,7 @@ services:
     container_name: apache-php
     build:
       context: .
+    restart: always
     ports:
       - 80:80
     volumes:
