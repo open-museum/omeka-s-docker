@@ -11,16 +11,20 @@ Omeka S is a web publishing platform for digital cultural heritage collections.
 
 Install [Docker](https://www.docker.com/).
 
+Go to `example`
+
 Copy and edit `.env.example`
 
 ```bash
+cd example
 cp .env.example .env
 nano .env
 ```
 
-Export environment variables and use `setup.sh` to create `database.ini`
+Export environment variables and use `setup.sh` to create `database.ini` and set permissions
 
 ```bash
+cd example
 source .env
 bash setup.sh
 ```
@@ -28,6 +32,7 @@ bash setup.sh
 If you want to start a local development instance, use `docker-compose.dev.yml`.
 
 ```bash
+cd example
 docker-compose --file docker-compose.dev.yml up -d
 ```
 
@@ -36,24 +41,28 @@ docker-compose --file docker-compose.dev.yml up -d
 Start Omeka S
 
 ```bash
+cd example
 docker-compose up -d
 ```
 
 If your installation complains about not being able to write to the folder `files`, fix permissions accordingly.
 
 ```bash
+cd example
 chown -R www-data:www-data files logs modules themes
 ```
 
 Stop Omeka S
 
 ```bash
+cd example
 docker-compose up -d
 ```
 
 Install [EasyInstall](https://github.com/Daniel-KM/Omeka-S-module-EasyInstall) to make your life more easy
 
 ```bash
+cd example
 cd modules
 curl -L -o EasyInstall-3.2.5.zip "https://github.com/Daniel-KM/Omeka-S-module-EasyInstall/releases/download/3.2.5/EasyInstall-3.2.5.zip"
 unzip EasyInstall-3.2.5.zip

@@ -13,8 +13,8 @@ return [
     ],
     'thumbnails' => [
         'types' => [
-            'large' => ['constraint' => 2500],
-            'medium' => ['constraint' => 800],
+            'large' => ['constraint' => 800],
+            'medium' => ['constraint' => 200],
             'square' => ['constraint' => 200],
         ],
         'thumbnailer_options' => [

@@ -1,3 +1,20 @@
+# Exclude example.env
+!example.env
+database.ini
+example/db/
+
+# exclude everything
+example/files/*
+example/logs/*
+example/modules/*
+example/themes/*
+
+# exception to the rule
+!example/files/.gitkeep
+!example/logs/.gitkeep
+!example/modules/.gitkeep
+!example/themes/.gitkeep
+
 # Created by https://www.gitignore.io/api/git,linux,macos,dotenv,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=git,linux,macos,dotenv,windows,visualstudiocode
 
@@ -100,16 +117,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/git,linux,macos,dotenv,windows,visualstudiocode
-
-# Exclude example.env
-!example.env
-database.ini
-db/
-
-# exclude everything
-files/*
-logs/*
-
-# exception to the rule
-!files/.gitkeep 
-!logs/.gitkeep 
