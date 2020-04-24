@@ -1,6 +1,6 @@
-# Omeka S Dockerized
+# Omeka S Docker
 
-Omeka S is a web publishing platform for digital cultural heritage collections.
+[Omeka S](https://github.com/omeka/omeka-s/) is a web publishing platform for digital cultural heritage collections.
 
 [![GitHub issues](https://img.shields.io/github/issues/maehr/omeka-s-docker.svg)](https://github.com/maehr/omeka-s-docker/issues)
 [![GitHub forks](https://img.shields.io/github/forks/maehr/omeka-s-docker.svg)](https://github.com/maehr/omeka-s-docker/network)
