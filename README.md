@@ -1,6 +1,8 @@
-# Omeka S Docker
+# [Omeka S Docker](https://github.com/open-museum/omeka-s-docker/)
 
 [Omeka S](https://github.com/omeka/omeka-s/) is a web publishing platform for digital cultural heritage collections.
+
+[<img src="android-chrome-512x512.png" align="right" width="100">](https://open-museum.github.io/omeka-s-docker/)
 
 [![GitHub issues](https://img.shields.io/github/issues/maehr/omeka-s-docker.svg)](https://github.com/maehr/omeka-s-docker/issues)
 [![GitHub forks](https://img.shields.io/github/forks/maehr/omeka-s-docker.svg)](https://github.com/maehr/omeka-s-docker/network)
