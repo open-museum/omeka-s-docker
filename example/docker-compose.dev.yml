@@ -8,14 +8,10 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./config/.htaccess-development:/usr/src/omeka-s/.htaccess
-      - ./config/database.ini:/usr/src/omeka-s/config/database.ini
       - ./files:/usr/src/omeka-s/files
       - ./logs:/usr/src/omeka-s/logs
       - ./modules:/usr/src/omeka-s/modules
       - ./themes:/usr/src/omeka-s/themes
-      - ./config/local.config-development.php:/usr/src/omeka-s/config/local.config.php
-      - ./config/php-development.ini:/usr/local/etc/php/php.ini
     environment:
       - EMAIL_HOST=${EMAIL_HOST}
       - EMAIL_PORT=${EMAIL_PORT}
