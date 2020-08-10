@@ -94,8 +94,8 @@ RUN set -eux; \
 
 VOLUME /var/www/html
 
-ENV OMEKA_VERSION 2.1.1
-ENV OMEKA_SHA1 85926a560e6faa2ba2aa9444a74e88c82c7f3900
+ENV OMEKA_VERSION 2.1.2
+ENV OMEKA_SHA1 a9d505d2675c93eb8fc0b9bf0bec060edb3fa6c4
 
 RUN set -ex; \
     curl -L -o omeka.zip "https://github.com/omeka/omeka-s/releases/download/v${OMEKA_VERSION}/omeka-s-${OMEKA_VERSION}.zip"; \
