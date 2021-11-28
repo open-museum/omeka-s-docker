@@ -1,5 +1,7 @@
 # [Omeka S Docker](https://github.com/open-museum/omeka-s-docker/)
 
+> ⚠️ This repository is outdated and has been archived. 
+
 [Omeka S](https://github.com/omeka/omeka-s/) is a web publishing platform for digital cultural heritage collections.
 
 [<img src="android-chrome-512x512.png" align="right" width="100">](https://open-museum.github.io/omeka-s-docker/)
